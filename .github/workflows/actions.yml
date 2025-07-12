@@ -10,18 +10,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Declare branch
-      shell: bash
-      run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
+      - name: Declare branch
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
 
-    - uses: repo-sync/pull-request@v2
-      name: pull-request
-      with:
-        destination_branch: "v0.0.1"
-        pr_title: "${{ env.branch }} ${{ github.event.head_commit.message }}"
-        pr_body: "The pull request details are written on Linear"
-        pr_draft: true
-        github_token: ${{ secrets.PAT }}
+      - uses: repo-sync/pull-request@v2
+        name: pull-request
+        with:
+          destination_branch: "v0.0.1"
+          pr_title: "${{ env.branch }} ${{ github.event.head_commit.message }}"
+          pr_body: "The pull request details are written on Linear"
+          pr_draft: true
+          github_token: ${{ secrets.PAT }}
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.5'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run unit tests
+        run: flutter test --verbose

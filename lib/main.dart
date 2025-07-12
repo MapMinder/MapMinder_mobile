@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mapminder_mobile/features/map/screen/map_screen.dart';
 
 void main() {
   runApp(const MapMinder());
@@ -10,9 +11,12 @@ class MapMinder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MapMinder',
       theme: ThemeData(),
-      // home: add mapminder home page
+      // TODO: this should be decided with environment variables
+      // eg: if production the debugShowCheckedModeBanner should be false else true
+      debugShowCheckedModeBanner: false,
+      home: MapScreen(),
     );
   }
 }
